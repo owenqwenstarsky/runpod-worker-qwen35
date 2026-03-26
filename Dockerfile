@@ -5,6 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     HF_HOME=/tmp/huggingface \
+    LD_LIBRARY_PATH=/app:/app/lib:/usr/local/lib:/usr/lib/x86_64-linux-gnu \
     MODEL_REPO=TeichAI/Qwen3.5-4B-Claude-Opus-Reasoning-GGUF \
     MODEL_PATH=/models/model.gguf \
     RUNPOD_MODEL_NAME=qwen3.5-4b-claude-opus-reasoning-q8_0 \
