@@ -24,6 +24,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
+COPY download_model.py .
 
 RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install -r requirements.txt && \
@@ -31,16 +32,7 @@ RUN python3 -m pip install --upgrade pip && \
 
 RUN mkdir -p /models
 
-RUN python3 -m huggingface_hub download "${MODEL_REPO}" \
-        --local-dir /models \
-        --include "*.q8_0.gguf" \
-        --include "*.Q8_0.gguf" \
-        --exclude "*mmproj*" && \
-    MODEL_FILE="$(find /models -type f \( -iname '*.q8_0.gguf' -o -iname '*.Q8_0.gguf' \) ! -iname '*mmproj*' | head -n 1)" && \
-    test -n "${MODEL_FILE}" && \
-    if [ "${MODEL_FILE}" != "${MODEL_PATH}" ]; then mv "${MODEL_FILE}" "${MODEL_PATH}"; fi && \
-    find /models -mindepth 1 ! -path "${MODEL_PATH}" -exec rm -rf {} + && \
-    rm -rf "${HF_HOME}"
+RUN python3 download_model.py
 
 COPY handler.py .
 
